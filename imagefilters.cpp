@@ -2,6 +2,8 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include <was/storage_account.h>
 #include <was/blob.h>
+#include <chrono>
+#include <thread>
 #include <iostream>
 #include <stdio.h>
 
@@ -11,6 +13,9 @@ using namespace azure;
 
 /// Global Variables
 Mat img; Mat templ; Mat result;
+
+char* image_window = "Source Image";
+char* result_window = "Result window";
 
 int match_method;
 int max_Trackbar = 5;
@@ -44,8 +49,10 @@ void run() {
 				concurrency::streams::container_buffer<std::vector<uint8_t>> buffer;
 				concurrency::streams::ostream output_stream(buffer);
 				blockBlob.download_to_stream(output_stream);
-				//blockBlob.delete_blob();
-				std::ofstream outfile("DownloadBlobFile.jpg", std::ofstream::binary);
+                                blockBlob.delete_blob();
+          			std::cout << "Downloaded blob:(" << blobname << ")" << " as DownloadBlobFile.jpg"<<endl;
+                                std::cout.flush();	
+                                std::ofstream outfile("DownloadBlobFile.jpg", std::ofstream::binary);
 				std::vector<unsigned char>& data = buffer.collection();
 
 				outfile.write((char *)&data[0], buffer.size());
@@ -56,6 +63,9 @@ void run() {
 				grayscale(img, resultblockBlob);
 			}
 		}
+	        std::cout<<"Sleeping, waiting for work!"<<endl;
+                std::cout.flush();
+                std::this_thread::sleep_for(std::chrono::seconds(30)); 
 		}
 }
 
@@ -64,6 +74,8 @@ void grayscale(Mat img, storage::cloud_block_blob resultblockBlob) {
 	//cv::resize(img, img, Size(), 0.5, 0.5);
 	imwrite("result.jpg", img);
 	resultblockBlob.upload_from_file("result.jpg");
+        std::cout << "Uploading blob with grayscale image";
+        std::cout.flush()<<endl; 
 }
 
 
@@ -96,3 +108,45 @@ int main(int argc, char** argv)
 * @function MatchingMethod
 * @brief Trackbar callback
 */
+
+void MatchingMethod(int, void*)
+{
+	/// Source image to display
+	Mat img_display;
+	img.copyTo(img_display);
+
+	/// Create the result matrix
+	int result_cols = img.cols - templ.cols + 1;
+	int result_rows = img.rows - templ.rows + 1;
+
+	result.create(result_rows, result_cols, CV_32FC1);
+
+	/// Do the Matching and Normalize
+	matchTemplate(img, templ, result, match_method);
+	normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat());
+
+	/// Localizing the best match with minMaxLoc
+	double minVal; double maxVal; Point minLoc; Point maxLoc;
+	Point matchLoc;
+
+	minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc, Mat());
+
+	/// For SQDIFF and SQDIFF_NORMED, the best matches are lower values. For all the other methods, the higher the better
+	if (match_method == CV_TM_SQDIFF || match_method == CV_TM_SQDIFF_NORMED)
+	{
+		matchLoc = minLoc;
+	}
+	else
+	{
+		matchLoc = maxLoc;
+	}
+
+	/// Show me what you got
+	rectangle(img_display, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+	rectangle(result, matchLoc, Point(matchLoc.x + templ.cols, matchLoc.y + templ.rows), Scalar::all(0), 2, 8, 0);
+
+	imshow(image_window, img_display);
+	imshow(result_window, result);
+
+	return;
+}
