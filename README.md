@@ -2,6 +2,7 @@
 Image Filters website using OpenCV
 
 There are two portions to this repo. 
+
 1. The ASP.net website is located under the image-web folder and presented as a Visual Studio Solution.Using the website you can upload a
    picture which gets stored in an Azure Storage Blob. When you click grayscale it will look for an grayscaled version of the image you 
    uploaded in the result Blob Container image. 
