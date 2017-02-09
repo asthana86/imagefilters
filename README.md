@@ -21,5 +21,4 @@ There are two portions to this repo.
         Your LD_LIBRARY_PATH need to point to your storage and cpprest dynamic shared libraries e.g. 
         /crimecop/azure-storage-cpp/Microsoft.WindowsAzure.Storage/build.release/Binaries:/crimecop/azure-storage-cpp/Microsoft.WindowsAzure.Storage/casablanca/Release/build.debug/Binaries
         Your include path needs to point to your Storage and CPP includes, likewise -L needs to point to your storage and Rest libraries
-        
-        
+       
