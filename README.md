@@ -11,7 +11,7 @@ There are two portions to this repo.
    to convert it to a grayscale version which is then uplodaded back to a blob.
    
 Build Instructions:
-   1. ASP.net website
+   1. ASP.net website (imagefilters folder)
       - In VS2015 build imagefilters.csproj, you will have to replace the following with your storage account:
         CloudStorageAccount storageAccount =  
         CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("cppstorage_AzureStorageConnectionString"));
