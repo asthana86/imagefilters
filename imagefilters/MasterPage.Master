@@ -1,0 +1,32 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="crimecopcpp.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Crime Cop Application</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,900' rel='stylesheet'
+        type='text/css'/>
+    <link rel="stylesheet" href="css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="css/font-awesome.css" type="text/css" />
+    <link rel="stylesheet" href="css/owl-carousel.css" type="text/css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+    <link href="css/custom'.css" rel="stylesheet" type="text/css" />
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="header">
+
+    </div>
+    <div class="main">
+        <asp:ContentPlaceHolder ID="maincontent1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    <div class="footer">
+    </div>
+    </form>
+</body>
+</html>
