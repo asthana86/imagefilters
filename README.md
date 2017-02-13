@@ -17,19 +17,15 @@ Build Instructions:
         CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("cppstorage_AzureStorageConnectionString"));
        
    2. The C++ piece of code on a Linux container.
-      - Create a container using this OpenCV image (https://github.com/kavolorn/Docker-OpenCV)
-      - Install and build the Azure Storage C++ SDK for Linux (https://github.com/azure/azure-storage-cpp#getting-started-on-linux)
-      - Use the build.sh file to build this C++ code 
-        Your LD_LIBRARY_PATH need to point to your storage and cpprest dynamic shared libraries e.g. 
-        /crimecop/azure-storage-cpp/Microsoft.WindowsAzure.Storage/build.release/Binaries:/crimecop/azure-storage- 
-        cpp/Microsoft.WindowsAzure.Storage/casablanca/Release/build.debug/Binaries
-        Your include path needs to point to your Storage and CPP includes, likewise -L needs to point to your storage and Rest libraries
-      - Update the storage_connection_string with your storage account and endpoints e.g.
-        const utility::string_t storage_connection_string
-
+      - If you are using docker:
+        'docker pull asthana/imagefiltersopencv'
+      - If you are not using docker, follow steps in the dockerfile manually on a linux shell
+       'https://github.com/asthana86/imagefilters/blob/master/dockerfile'
+      
 Running Instructions:
 - Run the website by launching the imagefilters.csproj
-- Run the C++ piece of code in the container. On startup this will look for work in the Blob container
+- Run the C++ piece of code in the container. 
+  ' export LD_LIBRARY_PATH=/imagecppservice/azure-storage-cpp/Microsoft.WindowsAzure.Storage/build.release/Binaries:/imagecppservice/casablanca/Release/build.release/Binaries:/imagecppservice/opencv-3.1.0/build/lib && /imagecppservice/imagefilters/a.out'
 
 To Do:
    1. Add support for scalability, running multiple containers with this C++ piece of code. Need to account for syncronization issues.
