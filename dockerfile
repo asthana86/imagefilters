@@ -46,5 +46,7 @@ RUN echo "export LD_LIBRARY_PATH=/imagecppservice/azure-storage-cpp/Microsoft.Wi
 
 RUN bash 
 
+RUN export LD_LIBRARY_PATH=/imagecppservice/azure-storage-cpp/Microsoft.WindowsAzure.Storage/build.release/Binaries:/imagecppservice/casablanca/Release/build.release/Binaries:/imagecppservice/opencv-3.1.0/build/lib && /imagecppservice/imagefilters/a.out &
+
    
  
